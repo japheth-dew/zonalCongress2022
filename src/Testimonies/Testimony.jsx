@@ -27,10 +27,10 @@ const Testimony = ({ handleClick }) => {
         testimonies.map((testimony) => (
           <div>
             <TestimonyCard
-              key={testimony.id}
-              name={testimony.Name}
-              chapter={testimony.Chapter}
-              testimony={testimony.Testimony}
+              key={testimony.name}
+              name={testimony.name}
+              chapter={testimony.fellowship}
+              testimony={testimony.testimony}
               date={testimony.date.toDate().toDateString()}
               handleClick={handleClick}
             />
