@@ -4,27 +4,34 @@ import { db } from "../firbaseConfig";
 import TestimonyCard from "./TestimonyCard";
 
 const Testimony = ({ handleClick }) => {
-  const [testimonies, setTestimonies] = useState([1]);
+  const [testimonies, setTestimonies] = useState([]);
 
   useEffect(() => {
-    const testimonyRef = collection(db, "zonalcongress");
+    const testimonyRef = collection(db, "testimony");
     const q = query(testimonyRef, orderBy("date", "desc"));
     onSnapshot(q, (snapshot) => {
-      console.log(snapshot.docs);
+      const testimonies = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setTestimonies(testimonies);
+      console.log(testimonies);
     });
-  });
+  }, []);
   return (
     <div className=" md:px-14 px-5">
       {testimonies.length === 0 ? (
-        <p> No Testimonies found </p>
+        <p> Loading Testimonies </p>
       ) : (
         testimonies.map((testimony) => (
           <div>
             <TestimonyCard
-              name={"name"}
-              chapter={"chapter"}
-              testimony={"lotesimony "}
-              date={"date"}
+              key={testimony.id}
+              name={testimony.Name}
+              chapter={testimony.Chapter}
+              testimony={testimony.Testimony}
+              date={testimony.date.toDate().toDateString()}
               handleClick={handleClick}
             />
           </div>

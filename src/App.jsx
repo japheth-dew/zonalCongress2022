@@ -10,7 +10,7 @@ const App = () => {
   };
   return (
     <div>
-      {showModal && <AddTestimony handleClick={handleClick} />}
+      {showModal && <AddTestimony  />}
       <Header />
       <p className="md:px-14 ml-4 py-2 font-bold ">Recent Testimonies</p>
       <Testimony handleClick={handleClick} />

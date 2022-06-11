@@ -1,38 +1,55 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+// import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
+import { Timestamp } from "firebase/firestore";
 
-const AddTestimony = ({ handleClick }) => {
-  const { register, handleSubmit, reset } = useForm();
-  const onSubmit = (data) => console.log(data);
+const AddTestimony = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    fellowship: "",
+    testimony: "",
+    date: Timestamp.now().toDate(),
+  });
 
+  const handleChnage = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handlePublish = () => {
+    if (!formData.name || !formData.fellowship || !formData.testimony) {
+      alert("Please fill all the fields");
+      return;
+    }
+  };
   return (
     <motion.div
-      onClick={handleClick}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="absolute w-screen h-screen  bg-blue-500 top-[10rem] "
     >
       <div className="flex flex-col items-center mt-10">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className=" border-[3px] border-white py-5 px-2 rounded-md flex flex-col gap-4 md:w-[50%] w-[90%]"
-        >
+        <form className=" border-[3px] border-white py-5 px-2 rounded-md flex flex-col gap-4 md:w-[50%] w-[90%]">
           <input
-            {...register("firstName")}
+            name="name"
+            value={formData.name}
+            onChange={(e) => handleChnage(e)}
             placeholder="Full Name"
             className="p-2 rounded-md w-full"
           />
           <input
-            {...register("fellowship")}
+            name="fellowship"
+            value={formData.fellowship}
+            onChange={(e) => handleChnage(e)}
             placeholder="Fellowship Chapter"
             className="p-2 rounded-md w-full"
           />
 
           <textarea
-            {...register("testimony", { required: true, maxLength: 200 })}
-            name="testimoty"
+            name="testimony"
+            onChange={(e) => handleChnage(e)}
+            value={formData.testimony}
+            name="testimony"
             id=""
             cols="30"
             rows="7"
@@ -40,11 +57,13 @@ const AddTestimony = ({ handleClick }) => {
             placeholder="Share Your Testimony"
           ></textarea>
 
-          <motion.input
-            whileTap={{ scale: 0.9 }}
+          <button
+            // whileTap={{ scale: 0.9 }}
             className="w-full bg-blue-900 p-2 font-bold text-white rounded-md hover:bg-blue-700"
-            type="submit"
-          />
+            onClick={handlePublish}
+          >
+            Submit
+          </button>
         </form>
       </div>
     </motion.div>
